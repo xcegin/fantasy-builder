@@ -16,17 +16,22 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <flyway.version>4.0.3</flyway.version>
+        <flyway.version>6.5.0</flyway.version>
         <postgresql.version>42.2.14</postgresql.version>
         <springfox.version>2.9.2</springfox.version>
+        <javaxvalidation.version>2.0.1.Final</javaxvalidation.version>
         <!-- File paths -->
-        <flyway.configFile>src\main\resources\flywayConfig.properties</flyway.configFile>
+        <flywayconf.configFile>src\main\resources\flywayConfig.properties</flywayconf.configFile>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
         <dependency>
@@ -60,6 +65,11 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${springfox.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${javaxvalidation.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -73,7 +83,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>${flyway.version}</version>
                 <configuration>
-                    <configFile>${flyway.configFile}</configFile>
+                    <configFiles>
+                        <configFile>${flywayconf.configFile}</configFile>
+                    </configFiles>
                 </configuration>
                 <executions>
                 <execution>

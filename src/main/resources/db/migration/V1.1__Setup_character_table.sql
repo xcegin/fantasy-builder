@@ -1,13 +1,11 @@
-CREATE TABLE public.CharacterFantasy (
+CREATE TABLE public.characterfantasy (
                         id BIGINT NOT NULL,
-                        char_name VARCHAR(50) NOT NULL,
-
-                        CONSTRAINT pk_char_id PRIMARY KEY (id),
-                        CONSTRAINT uq_char_char_name UNIQUE (char_name)
+                        codename VARCHAR(50) NOT NULL,
+                        CONSTRAINT pk_char_id PRIMARY KEY (id)
 );
 
-COMMENT ON TABLE CharacterFantasy IS 'Characters name';
-COMMENT ON COLUMN CharacterFantasy.id IS 'id';
-COMMENT ON COLUMN CharacterFantasy.char_name IS 'unique character name';
+COMMENT ON TABLE characterfantasy IS 'Characters name';
+COMMENT ON COLUMN characterfantasy.codename IS 'Codename of the character';
+COMMENT ON COLUMN characterfantasy.id IS 'id';
 
-CREATE SEQUENCE seq_character_id;
+CREATE SEQUENCE seq_characterfantasy_id;

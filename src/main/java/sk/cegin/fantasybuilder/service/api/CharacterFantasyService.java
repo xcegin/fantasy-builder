@@ -1,18 +1,18 @@
 package sk.cegin.fantasybuilder.service.api;
 
-import sk.cegin.fantasybuilder.entity.CharacterFantasy;
+import sk.cegin.fantasybuilder.dto.CharacterFantasyDto;
 
 import java.util.List;
 
 public interface CharacterFantasyService {
 
-    CharacterFantasy getUserById(Long id);
+    CharacterFantasyDto getCharacterById(Long id);
 
-    CharacterFantasy registerCharacterFantasy(CharacterFantasy characterFantasy);
+    CharacterFantasyDto createCharacterFantasy(CharacterFantasyDto characterFantasyDto);
 
-    List<CharacterFantasy> getAll();
+    List<CharacterFantasyDto> getAll();
 
-    CharacterFantasy update(CharacterFantasy newCharacter, Long id);
+    CharacterFantasyDto update(CharacterFantasyDto newCharacterDto, Long id);
 
     void delete(Long id);
 }

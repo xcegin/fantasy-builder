@@ -1,45 +1,70 @@
 package sk.cegin.fantasybuilder.restcontroller;
 
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import sk.cegin.fantasybuilder.entity.CharacterFantasy;
+import sk.cegin.fantasybuilder.config.RestConstants;
+import sk.cegin.fantasybuilder.dto.CharacterFantasyDto;
 import sk.cegin.fantasybuilder.service.api.CharacterFantasyService;
 
+import javax.validation.Valid;
 import java.util.List;
 
+import static sk.cegin.fantasybuilder.config.RestConstants.*;
+
 @RestController
-@RequestMapping("/characters")
+@RequestMapping(CHARACTERS_FANTASY_MAPPING_PATH)
 public class CharactersFantasyRestController {
 
     @Autowired
     private CharacterFantasyService characterFantasyService;
 
-    @GetMapping
-    public List<CharacterFantasy> findAll() {
+    @RequestMapping(method = RequestMethod.OPTIONS)
+    public ResponseEntity<?> collectionOptions() {
+        return ResponseEntity
+                .ok()
+                .allow(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS, HttpMethod.DELETE, HttpMethod.PUT)
+                .build();
+    }
+
+
+    @GetMapping(produces = JSON_CONTENT_TYPE)
+    public List<CharacterFantasyDto> findAll() {
         return characterFantasyService.getAll();
     }
 
-    @GetMapping(value = "/{id}")
-    public CharacterFantasy findById(@PathVariable("id") Long id) {
-        return characterFantasyService.getUserById(id);
+
+    @GetMapping(value = RestConstants.ID_PLACEHOLDER_PATH, produces = JSON_CONTENT_TYPE)
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Could not find character {id}")
+    })
+    public CharacterFantasyDto findById(@PathVariable(ID_PLACEHOLDER) Long id) {
+        return characterFantasyService.getCharacterById(id);
     }
 
-    @PostMapping
+    @PostMapping(produces = JSON_CONTENT_TYPE, consumes = JSON_CONTENT_TYPE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CharacterFantasy create(@RequestBody CharacterFantasy resource) {
-        return characterFantasyService.registerCharacterFantasy(resource);
+    public CharacterFantasyDto create(@Valid @RequestBody CharacterFantasyDto resource) {
+        return characterFantasyService.createCharacterFantasy(resource);
     }
 
-    @PutMapping(value = "/{id}")
+    @PatchMapping(value = RestConstants.ID_PLACEHOLDER_PATH, consumes = JSON_CONTENT_TYPE)
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Could not find character {id}")
+    })
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable( "id" ) Long id, @RequestBody CharacterFantasy resource) {
+    public void update(@PathVariable(ID_PLACEHOLDER) Long id, @Valid @RequestBody CharacterFantasyDto resource) {
         characterFantasyService.update(resource, id);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = RestConstants.ID_PLACEHOLDER_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable("id") Long id) {
+    public ResponseEntity<Void> delete(@PathVariable(ID_PLACEHOLDER) Long id) {
         characterFantasyService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

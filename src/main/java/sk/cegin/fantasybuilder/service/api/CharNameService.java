@@ -12,7 +12,7 @@ public interface CharNameService {
 
     List<CharNameDto> getAll(CharacterFantasyDto characterFantasyDto);
 
-    //CharacterFantasyDto update(CharacterFantasyDto newCharacterDto, Long id);
+    CharNameDto update(CharNameDto charNameDto, Long id);
 
     void delete(Long id);
 }

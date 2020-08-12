@@ -9,6 +9,7 @@ import sk.cegin.fantasybuilder.dto.CharacterFantasyDto;
 import sk.cegin.fantasybuilder.entity.CharName;
 import sk.cegin.fantasybuilder.entity.CharacterFantasy;
 import sk.cegin.fantasybuilder.exception.CharNameNotFoundException;
+import sk.cegin.fantasybuilder.exception.CharacterFantasyNotFoundException;
 import sk.cegin.fantasybuilder.repository.CharNameRepository;
 import sk.cegin.fantasybuilder.service.api.CharNameService;
 
@@ -51,6 +52,18 @@ CharNameServiceImpl implements CharNameService {
             charNames.add(convertToDto(charName));
         }
         return charNames;
+    }
+
+    @Override
+    public CharNameDto update(CharNameDto charNameDto, Long id) {
+        return convertToDto(charNameRepository.findById(id)
+                .map(charName -> {
+                    charName.setCharName(charNameDto.getCharName());
+                    charName.setDescription(charNameDto.getDescription());
+                    charName.setIsAlias(charNameDto.getIsAlias());
+                    return charNameRepository.save(charName);
+                })
+                .orElseThrow(() -> new CharNameNotFoundException(id)));
     }
 
     public void delete(Long id) {

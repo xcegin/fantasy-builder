@@ -43,6 +43,16 @@ public class CharNameRestController {
                 .build();
     }
 
+    @PatchMapping(value = CHAR_NAME_MAPPING_PATH + ID_PLACEHOLDER_PATH, consumes = JSON_CONTENT_TYPE)
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "Could not find character name with id: {id}")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Void> update(@PathVariable(ID_PLACEHOLDER) Long id, @Valid @RequestBody CharNameDto resource) {
+        charNameService.update(resource, id);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping(produces = JSON_CONTENT_TYPE, value = CHARACTERS_FANTASY_MAPPING_PATH + CHARACTER_FANTASY_ID_PLACEHOLDER_PATH + CHAR_NAME_MAPPING_PATH)
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Could not find character with id: {id}")

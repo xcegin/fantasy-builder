@@ -10,11 +10,11 @@ COMMENT ON TABLE gender IS 'Gender';
 COMMENT ON COLUMN gender.id IS 'id';
 COMMENT ON COLUMN gender.title IS 'Gender title';
 
-INSERT INTO public.type_of_body(id, type_body)
+INSERT INTO public.gender(id, title)
 VALUES ('MALE', 'Male');
-INSERT INTO public.type_of_body(id, type_body)
+INSERT INTO public.gender(id, title)
 VALUES ('FEMALE', 'Female');
-INSERT INTO public.type_of_body(id, type_body)
+INSERT INTO public.gender(id, title)
 VALUES ('OTHER', 'Other gender/non specific');
 
 CREATE TABLE public.race
@@ -148,7 +148,7 @@ COMMENT ON COLUMN appearance.skin_color IS 'skin color';
 COMMENT ON COLUMN appearance.type_of_body IS 'type of body as enum of [RECTANGLE,TRIANGLE,TRAPEZOID,OVAL,INV_TRIANGLE]';
 COMMENT ON COLUMN appearance.shape_of_face IS 'shape of face as enum of [SQUARE,ROUND,PEAR,OVAL,RECTANGLE,DIAMOND,HEART,TRIANGLE]';
 COMMENT ON COLUMN appearance.gender_id IS 'gender FK';
-COMMENT ON COLUMN appearance.characterfantasy_id IS 'character fantasy FK';
+COMMENT ON COLUMN appearance.char_id IS 'character fantasy FK';
 COMMENT ON COLUMN appearance.predominant_feature IS 'predominant feature';
 COMMENT ON COLUMN appearance.posture IS 'posture';
 COMMENT ON COLUMN appearance.description IS 'description as markdown';

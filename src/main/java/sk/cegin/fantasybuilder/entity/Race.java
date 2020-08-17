@@ -25,7 +25,7 @@ public class Race {
     private Long id;
 
     @NotNull
-    @Column(name = "char_name", nullable = false, length = 100)
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
     @Column(name = "lifespan", nullable = false,

@@ -47,11 +47,11 @@ public class Appearance {
             precision = 2, scale = 10)
     private BigDecimal height;
 
-    @Column(name = "eye_color", nullable = false)
-    private Integer eyeColor;
+    @Column(name = "eye_color", nullable = false, length = 10)
+    private String eyeColor;
 
-    @Column(name = "skin_color", nullable = false)
-    private Integer skinColor;
+    @Column(name = "skin_color", nullable = false, length = 10)
+    private String skinColor;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type_of_body", nullable = false)

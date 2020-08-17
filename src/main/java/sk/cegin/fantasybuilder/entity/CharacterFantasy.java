@@ -9,6 +9,8 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Getter
 @Setter
 @Cacheable
@@ -28,4 +30,9 @@ public class CharacterFantasy {
     @Column(name = "codename", nullable = false, unique = true,
             length = 50)
     private String codename;
+
+    @NotNull
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "race_id", nullable = false)
+    private Race race;
 }

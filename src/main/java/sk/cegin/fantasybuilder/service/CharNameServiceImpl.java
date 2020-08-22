@@ -9,7 +9,6 @@ import sk.cegin.fantasybuilder.dto.CharacterFantasyDto;
 import sk.cegin.fantasybuilder.entity.CharName;
 import sk.cegin.fantasybuilder.entity.CharacterFantasy;
 import sk.cegin.fantasybuilder.exception.CharNameNotFoundException;
-import sk.cegin.fantasybuilder.exception.CharacterFantasyNotFoundException;
 import sk.cegin.fantasybuilder.repository.CharNameRepository;
 import sk.cegin.fantasybuilder.service.api.CharNameService;
 

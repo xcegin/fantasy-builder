@@ -28,6 +28,7 @@ public class Race {
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
+    @NotNull
     @Column(name = "lifespan", nullable = false,
             length = 50)
     private String lifespan;
@@ -40,11 +41,9 @@ public class Race {
     @Column(name = "weight", nullable = false, length = 50)
     private String weight;
 
-    @NotNull
     @Column(name = "distinctions", nullable = false, length = 50)
     private String distinctions;
 
-    @NotNull
     @Column(name = "description", nullable = false)
     private String description;
 }

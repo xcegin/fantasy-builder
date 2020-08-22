@@ -31,8 +31,7 @@ public class CharacterFantasy {
             length = 50)
     private String codename;
 
-    @NotNull
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "race_id", nullable = false)
-    private Race race;
+    @JoinColumn(name = "race_id", nullable = true)
+    private Race race = null;
 }

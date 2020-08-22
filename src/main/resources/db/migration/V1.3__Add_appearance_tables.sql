@@ -45,7 +45,7 @@ ALTER TABLE public.characterfantasy
 ALTER TABLE public.characterfantasy
     ADD CONSTRAINT fk_characterfantasy__race_id FOREIGN KEY (race_id)
         REFERENCES public.race (id)
-        ON UPDATE CASCADE ON DELETE RESTRICT;
+        ON UPDATE CASCADE ON DELETE SET NULL;
 
 COMMENT ON COLUMN characterfantasy.race_id IS 'FK reference to the race';
 

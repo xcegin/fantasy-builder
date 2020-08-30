@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import sk.cegin.fantasybuilder.exception.RaceNotFoundException;
+import sk.cegin.fantasybuilder.exception.EntityNotFoundException;
 
 @ControllerAdvice
-public class RaceNotFoundAdvice {
+public class EntityNotFoundAdvice {
     @ResponseBody
-    @ExceptionHandler(RaceNotFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String raceNotFoundHandler(RaceNotFoundException ex) {
-        Logger logger = LoggerFactory.getLogger(RaceNotFoundException.class);
+    public String raceNotFoundHandler(EntityNotFoundException ex) {
+        Logger logger = LoggerFactory.getLogger(EntityNotFoundException.class);
         logger.error(ex.getMessage());
         return ex.getMessage();
     }

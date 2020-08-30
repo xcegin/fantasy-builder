@@ -7,8 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sk.cegin.fantasybuilder.dto.CharacterFantasyDto;
 import sk.cegin.fantasybuilder.entity.CharacterFantasy;
 import sk.cegin.fantasybuilder.entity.Race;
-import sk.cegin.fantasybuilder.exception.CharacterFantasyNotFoundException;
-import sk.cegin.fantasybuilder.exception.RaceNotFoundException;
+import sk.cegin.fantasybuilder.exception.EntityNotFoundException;
 import sk.cegin.fantasybuilder.repository.CharacterFantasyRepository;
 import sk.cegin.fantasybuilder.repository.RaceRepository;
 import sk.cegin.fantasybuilder.service.api.CharacterFantasyService;
@@ -29,13 +28,13 @@ public class CharacterFantasyServiceImpl implements CharacterFantasyService {
     private ModelMapper modelMapper;
 
     @Transactional
-    public CharacterFantasyDto getCharacterById(Long id) {
+    public CharacterFantasyDto getCharacterById(Long id) throws EntityNotFoundException {
         return convertToDto(characterFantasyRepository.findById(id)
-                .orElseThrow(() -> new CharacterFantasyNotFoundException(id)));
+                .orElseThrow(() -> new EntityNotFoundException(CharacterFantasy.class, id)));
     }
 
     @Transactional
-    public CharacterFantasyDto createCharacterFantasy(CharacterFantasyDto newCharacterDto) {
+    public CharacterFantasyDto createCharacterFantasy(CharacterFantasyDto newCharacterDto) throws EntityNotFoundException {
         CharacterFantasy newCharacter = convertToEntity(newCharacterDto);
         newCharacter = characterFantasyRepository.save(newCharacter);
         return convertToDto(newCharacter);
@@ -51,7 +50,7 @@ public class CharacterFantasyServiceImpl implements CharacterFantasyService {
     }
 
     @Transactional
-    public CharacterFantasyDto update(CharacterFantasyDto characterFantasyDto, Long id) {
+    public CharacterFantasyDto update(CharacterFantasyDto characterFantasyDto, Long id) throws EntityNotFoundException {
         CharacterFantasy newCharacter = convertToEntity(characterFantasyDto);
         return convertToDto(characterFantasyRepository.findById(id)
                 .map(character -> {
@@ -59,13 +58,13 @@ public class CharacterFantasyServiceImpl implements CharacterFantasyService {
                     character.setRace(newCharacter.getRace());
                     return characterFantasyRepository.save(character);
                 })
-                .orElseThrow(() -> new CharacterFantasyNotFoundException(id)));
+                .orElseThrow(() -> new EntityNotFoundException(CharacterFantasy.class, id)));
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long id) throws EntityNotFoundException {
         if (!characterFantasyRepository.existsById(id)) {
-            throw new CharacterFantasyNotFoundException(id);
+            throw new EntityNotFoundException(CharacterFantasy.class, id);
         }
         characterFantasyRepository.deleteById(id);
     }
@@ -78,11 +77,11 @@ public class CharacterFantasyServiceImpl implements CharacterFantasyService {
         return characterFantasyDto;
     }
 
-    private CharacterFantasy convertToEntity(CharacterFantasyDto characterFantasyDto) {
+    private CharacterFantasy convertToEntity(CharacterFantasyDto characterFantasyDto) throws EntityNotFoundException {
         CharacterFantasy characterFantasy = modelMapper.map(characterFantasyDto, CharacterFantasy.class);
         if (characterFantasyDto.getRaceId() != null) {
             Race race = raceRepository.findById(characterFantasyDto.getRaceId())
-                    .orElseThrow(() -> new RaceNotFoundException(characterFantasyDto.getRaceId()));
+                    .orElseThrow(() -> new EntityNotFoundException(Race.class, characterFantasyDto.getRaceId()));
             characterFantasy.setRace(race);
         }
         return characterFantasy;

@@ -23,7 +23,6 @@ public class Gender {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @ApiModelProperty(readOnly = true)
     @Column(name = "id", updatable = false, unique = true, nullable = false, length = 10)
-    @NotNull
     private String id;
 
     @Column(name = "title", updatable = false, unique = true, nullable = false, length = 50)

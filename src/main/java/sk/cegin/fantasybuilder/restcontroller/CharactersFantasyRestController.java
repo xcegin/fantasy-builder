@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.cegin.fantasybuilder.config.RestConstants;
 import sk.cegin.fantasybuilder.dto.CharacterFantasyDto;
+import sk.cegin.fantasybuilder.exception.EntityNotFoundException;
 import sk.cegin.fantasybuilder.service.api.CharacterFantasyService;
 
 import javax.validation.Valid;
@@ -42,13 +43,13 @@ public class CharactersFantasyRestController {
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Could not find character {id}")
     })
-    public CharacterFantasyDto findById(@PathVariable(ID_PLACEHOLDER) Long id) {
+    public CharacterFantasyDto findById(@PathVariable(ID_PLACEHOLDER) Long id) throws EntityNotFoundException {
         return characterFantasyService.getCharacterById(id);
     }
 
     @PostMapping(produces = JSON_CONTENT_TYPE, consumes = JSON_CONTENT_TYPE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CharacterFantasyDto create(@Valid @RequestBody CharacterFantasyDto resource) {
+    public CharacterFantasyDto create(@Valid @RequestBody CharacterFantasyDto resource) throws EntityNotFoundException {
         return characterFantasyService.createCharacterFantasy(resource);
     }
 
@@ -57,13 +58,13 @@ public class CharactersFantasyRestController {
             @ApiResponse(code = 404, message = "Could not find character {id}")
     })
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable(ID_PLACEHOLDER) Long id, @Valid @RequestBody CharacterFantasyDto resource) {
+    public void update(@PathVariable(ID_PLACEHOLDER) Long id, @Valid @RequestBody CharacterFantasyDto resource) throws EntityNotFoundException {
         characterFantasyService.update(resource, id);
     }
 
     @DeleteMapping(value = RestConstants.ID_PLACEHOLDER_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> delete(@PathVariable(ID_PLACEHOLDER) Long id) {
+    public ResponseEntity<Void> delete(@PathVariable(ID_PLACEHOLDER) Long id) throws EntityNotFoundException {
         characterFantasyService.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.cegin.fantasybuilder.config.RestConstants;
 import sk.cegin.fantasybuilder.dto.RaceDto;
+import sk.cegin.fantasybuilder.exception.EntityNotFoundException;
 import sk.cegin.fantasybuilder.service.api.RaceService;
 
 import javax.validation.Valid;
@@ -42,7 +43,7 @@ public class RaceRestController {
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Could not find race {id}")
     })
-    public RaceDto findById(@PathVariable(ID_PLACEHOLDER) Long id) {
+    public RaceDto findById(@PathVariable(ID_PLACEHOLDER) Long id) throws EntityNotFoundException {
         return raceService.getRaceById(id);
     }
 
@@ -57,13 +58,13 @@ public class RaceRestController {
             @ApiResponse(code = 404, message = "Could not find race {id}")
     })
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable(ID_PLACEHOLDER) Long id, @Valid @RequestBody RaceDto resource) {
+    public void update(@PathVariable(ID_PLACEHOLDER) Long id, @Valid @RequestBody RaceDto resource) throws EntityNotFoundException {
         raceService.update(resource, id);
     }
 
     @DeleteMapping(value = RestConstants.ID_PLACEHOLDER_PATH)
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Void> delete(@PathVariable(ID_PLACEHOLDER) Long id) {
+    public ResponseEntity<Void> delete(@PathVariable(ID_PLACEHOLDER) Long id) throws EntityNotFoundException {
         raceService.delete(id);
         return ResponseEntity.noContent().build();
     }

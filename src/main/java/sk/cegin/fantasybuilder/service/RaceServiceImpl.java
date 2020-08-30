@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sk.cegin.fantasybuilder.dto.RaceDto;
 import sk.cegin.fantasybuilder.entity.Race;
-import sk.cegin.fantasybuilder.exception.RaceNotFoundException;
+import sk.cegin.fantasybuilder.exception.EntityNotFoundException;
 import sk.cegin.fantasybuilder.repository.RaceRepository;
 import sk.cegin.fantasybuilder.service.api.RaceService;
 
@@ -24,9 +24,9 @@ public class RaceServiceImpl implements RaceService {
 
     @Override
     @Transactional
-    public RaceDto getRaceById(Long id) {
+    public RaceDto getRaceById(Long id) throws EntityNotFoundException {
         return convertToDto(raceRepository.findById(id)
-                .orElseThrow(() -> new RaceNotFoundException(id)));
+                .orElseThrow(() -> new EntityNotFoundException(Race.class, id)));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class RaceServiceImpl implements RaceService {
 
     @Override
     @Transactional
-    public RaceDto update(RaceDto raceDto, Long id) {
+    public RaceDto update(RaceDto raceDto, Long id) throws EntityNotFoundException {
         return convertToDto(raceRepository.findById(id)
                 .map(race -> {
                     race.setName(raceDto.getName());
@@ -60,14 +60,14 @@ public class RaceServiceImpl implements RaceService {
                     race.setLifespan(raceDto.getLifespan());
                     return raceRepository.save(race);
                 })
-                .orElseThrow(() -> new RaceNotFoundException(id)));
+                .orElseThrow(() -> new EntityNotFoundException(Race.class, id)));
     }
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        if (!raceRepository.existsById(id)){
-            throw new RaceNotFoundException(id);
+    public void delete(Long id) throws EntityNotFoundException {
+        if (!raceRepository.existsById(id)) {
+            throw new EntityNotFoundException(Race.class, id);
         }
         raceRepository.deleteById(id);
     }

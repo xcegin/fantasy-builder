@@ -1,4 +1,4 @@
-package sk.cegin.fantasybuilder.service;
+package sk.cegin.fantasybuilder.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,7 @@ import sk.cegin.fantasybuilder.dto.CharNameDto;
 import sk.cegin.fantasybuilder.dto.CharacterFantasyDto;
 import sk.cegin.fantasybuilder.entity.CharName;
 import sk.cegin.fantasybuilder.entity.CharacterFantasy;
-import sk.cegin.fantasybuilder.exception.CharNameNotFoundException;
-import sk.cegin.fantasybuilder.exception.CharacterFantasyNotFoundException;
+import sk.cegin.fantasybuilder.exception.EntityNotFoundException;
 import sk.cegin.fantasybuilder.repository.CharNameRepository;
 import sk.cegin.fantasybuilder.service.api.CharNameService;
 
@@ -28,9 +27,9 @@ CharNameServiceImpl implements CharNameService {
 
     @Override
     @Transactional
-    public CharNameDto getCharNameById(Long id) {
+    public CharNameDto getCharNameById(Long id) throws EntityNotFoundException {
         return convertToDto(charNameRepository.findById(id)
-                .orElseThrow(() -> new CharNameNotFoundException(id)));
+                .orElseThrow(() -> new EntityNotFoundException(CharName.class, id)));
     }
 
     @Override
@@ -55,7 +54,7 @@ CharNameServiceImpl implements CharNameService {
     }
 
     @Override
-    public CharNameDto update(CharNameDto charNameDto, Long id) {
+    public CharNameDto update(CharNameDto charNameDto, Long id) throws EntityNotFoundException {
         return convertToDto(charNameRepository.findById(id)
                 .map(charName -> {
                     charName.setCharName(charNameDto.getCharName());
@@ -63,12 +62,12 @@ CharNameServiceImpl implements CharNameService {
                     charName.setIsAlias(charNameDto.getIsAlias());
                     return charNameRepository.save(charName);
                 })
-                .orElseThrow(() -> new CharNameNotFoundException(id)));
+                .orElseThrow(() -> new EntityNotFoundException(CharName.class, id)));
     }
 
-    public void delete(Long id) {
-        if (!charNameRepository.existsById(id)){
-            throw new CharNameNotFoundException(id);
+    public void delete(Long id) throws EntityNotFoundException {
+        if (!charNameRepository.existsById(id)) {
+            throw new EntityNotFoundException(CharName.class, id);
         }
         charNameRepository.deleteById(id);
     }

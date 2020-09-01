@@ -8,10 +8,23 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class CharacterFantasyDto {
+public class RaceDto {
     @ApiModelProperty(readOnly = true)
     private Long id;
+
     @NotNull
-    private String codename;
-    private Long raceId;
+    private String name;
+
+    @NotNull
+    private String lifespan;
+
+    @NotNull
+    private String height;
+
+    @NotNull
+    private String weight;
+
+    private String distinctions;
+
+    private String description;
 }

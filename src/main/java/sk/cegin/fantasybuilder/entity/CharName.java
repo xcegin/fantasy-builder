@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import static javax.persistence.FetchType.LAZY;
 @Entity(name = "char_name")
 @SequenceGenerator(name = "generator__seq_char_name__id", schema = "public", sequenceName = "seq_char_name_id",
         allocationSize = 1)
+@ToString
 public class CharName {
 
     @Id

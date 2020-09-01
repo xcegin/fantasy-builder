@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sk.cegin.fantasybuilder.config.RestConstants;
-import sk.cegin.fantasybuilder.dto.CharacterFantasyDto;
+import sk.cegin.fantasybuilder.dto.RaceDto;
 import sk.cegin.fantasybuilder.exception.EntityNotFoundException;
-import sk.cegin.fantasybuilder.service.api.CharacterFantasyService;
+import sk.cegin.fantasybuilder.service.api.RaceService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -18,11 +18,11 @@ import java.util.List;
 import static sk.cegin.fantasybuilder.config.RestConstants.*;
 
 @RestController
-@RequestMapping(CHARACTERS_FANTASY_MAPPING_PATH)
-public class CharactersFantasyRestController {
+@RequestMapping(RACE_MAPPING_PATH)
+public class RaceRestController {
 
     @Autowired
-    private CharacterFantasyService characterFantasyService;
+    private RaceService raceService;
 
     @RequestMapping(method = RequestMethod.OPTIONS)
     public ResponseEntity<?> collectionOptions() {
@@ -34,38 +34,38 @@ public class CharactersFantasyRestController {
 
 
     @GetMapping(produces = JSON_CONTENT_TYPE)
-    public List<CharacterFantasyDto> findAll() {
-        return characterFantasyService.getAll();
+    public List<RaceDto> findAll() {
+        return raceService.getAll();
     }
 
 
     @GetMapping(value = RestConstants.ID_PLACEHOLDER_PATH, produces = JSON_CONTENT_TYPE)
     @ApiResponses(value = {
-            @ApiResponse(code = 404, message = "Could not find character {id}")
+            @ApiResponse(code = 404, message = "Could not find race {id}")
     })
-    public CharacterFantasyDto findById(@PathVariable(ID_PLACEHOLDER) Long id) throws EntityNotFoundException {
-        return characterFantasyService.getCharacterById(id);
+    public RaceDto findById(@PathVariable(ID_PLACEHOLDER) Long id) throws EntityNotFoundException {
+        return raceService.getRaceById(id);
     }
 
     @PostMapping(produces = JSON_CONTENT_TYPE, consumes = JSON_CONTENT_TYPE)
     @ResponseStatus(HttpStatus.CREATED)
-    public CharacterFantasyDto create(@Valid @RequestBody CharacterFantasyDto resource) throws EntityNotFoundException {
-        return characterFantasyService.createCharacterFantasy(resource);
+    public RaceDto create(@Valid @RequestBody RaceDto resource) {
+        return raceService.createRace(resource);
     }
 
     @PatchMapping(value = RestConstants.ID_PLACEHOLDER_PATH, consumes = JSON_CONTENT_TYPE)
     @ApiResponses(value = {
-            @ApiResponse(code = 404, message = "Could not find character {id}")
+            @ApiResponse(code = 404, message = "Could not find race {id}")
     })
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable(ID_PLACEHOLDER) Long id, @Valid @RequestBody CharacterFantasyDto resource) throws EntityNotFoundException {
-        characterFantasyService.update(resource, id);
+    public void update(@PathVariable(ID_PLACEHOLDER) Long id, @Valid @RequestBody RaceDto resource) throws EntityNotFoundException {
+        raceService.update(resource, id);
     }
 
     @DeleteMapping(value = RestConstants.ID_PLACEHOLDER_PATH)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Void> delete(@PathVariable(ID_PLACEHOLDER) Long id) throws EntityNotFoundException {
-        characterFantasyService.delete(id);
+        raceService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

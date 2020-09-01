@@ -1,4 +1,4 @@
-package sk.cegin.fantasybuilder.service;
+package sk.cegin.fantasybuilder.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

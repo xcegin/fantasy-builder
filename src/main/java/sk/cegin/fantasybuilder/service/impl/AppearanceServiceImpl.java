@@ -1,4 +1,4 @@
-package sk.cegin.fantasybuilder.service;
+package sk.cegin.fantasybuilder.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +12,6 @@ import sk.cegin.fantasybuilder.repository.AppearanceRepository;
 import sk.cegin.fantasybuilder.repository.GenderRepository;
 import sk.cegin.fantasybuilder.service.api.AppearanceService;
 import sk.cegin.fantasybuilder.service.api.CharacterFantasyService;
-import sk.cegin.fantasybuilder.service.api.GenderService;
-
-import java.util.List;
 
 @Service
 public class AppearanceServiceImpl implements AppearanceService {
@@ -33,8 +30,9 @@ public class AppearanceServiceImpl implements AppearanceService {
 
     @Override
     @Transactional
-    public AppearanceDto getAppearanceById(Long id) {
-        return null;
+    public AppearanceDto getAppearanceById(Long id) throws EntityNotFoundException {
+        Appearance appearance = appearanceRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(Appearance.class, id));
+        return convertToDto(appearance);
     }
 
     @Override
@@ -49,20 +47,41 @@ public class AppearanceServiceImpl implements AppearanceService {
 
     @Override
     @Transactional
-    public List<AppearanceDto> getAll(CharacterFantasyDto characterFantasyDto) {
-        return null;
+    public AppearanceDto get(CharacterFantasyDto characterFantasyDto) {
+        CharacterFantasy characterFantasy = modelMapper.map(characterFantasyDto, CharacterFantasy.class);
+        return convertToDto(appearanceRepository.findByCharacterFantasy(characterFantasy));
     }
 
     @Override
     @Transactional
-    public AppearanceDto update(AppearanceDto charNameDto, Long id) {
-        return null;
+    public AppearanceDto update(AppearanceDto appearanceDto, Long id) throws EntityNotFoundException {
+        Appearance appearance = convertToEntity(appearanceDto);
+        return convertToDto(appearanceRepository.findById(id)
+                .map(appearanceNew -> {
+                    appearanceNew.setAge(appearance.getAge());
+                    appearanceNew.setTypeOfBody(appearance.getTypeOfBody());
+                    appearanceNew.setShapeOfFace(appearance.getShapeOfFace());
+                    appearanceNew.setGender(appearance.getGender());
+                    appearanceNew.setAgeOfAppearance(appearance.getAgeOfAppearance());
+                    appearanceNew.setDescription(appearance.getDescription());
+                    appearanceNew.setEyeColor(appearance.getEyeColor());
+                    appearanceNew.setGlasses(appearance.getGlasses());
+                    appearanceNew.setHeight(appearance.getHeight());
+                    appearanceNew.setWeight(appearance.getWeight());
+                    appearanceNew.setPosture(appearance.getPosture());
+                    appearanceNew.setDescription(appearance.getDescription());
+                    appearanceNew.setSkinColor(appearance.getSkinColor());
+                    return appearanceRepository.save(appearanceNew);
+                }).orElseThrow(() -> new EntityNotFoundException(Appearance.class, id)));
     }
 
     @Override
     @Transactional
-    public void delete(Long id) {
-
+    public void delete(Long id) throws EntityNotFoundException {
+        if (!appearanceRepository.existsById(id)) {
+            throw new EntityNotFoundException(Appearance.class, id);
+        }
+        appearanceRepository.deleteById(id);
     }
 
     private AppearanceDto convertToDto(Appearance appearance) {
@@ -82,6 +101,8 @@ public class AppearanceServiceImpl implements AppearanceService {
                     .orElseThrow(() -> new EntityNotFoundException(Gender.class, appearanceDto.getGenderId()));
             appearance.setGender(gender);
         }
+        appearance.setShapeOfFace(ShapeOfFace.valueOf(appearanceDto.getShapeOfFaceId()));
+        appearance.setTypeOfBody(TypeOfBody.valueOf(appearanceDto.getTypeOfBodyId()));
         return appearance;
     }
 }

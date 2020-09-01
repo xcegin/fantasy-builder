@@ -4,16 +4,14 @@ import sk.cegin.fantasybuilder.dto.AppearanceDto;
 import sk.cegin.fantasybuilder.dto.CharacterFantasyDto;
 import sk.cegin.fantasybuilder.exception.EntityNotFoundException;
 
-import java.util.List;
-
 public interface AppearanceService {
-    AppearanceDto getAppearanceById(Long id);
+    AppearanceDto getAppearanceById(Long id) throws EntityNotFoundException;
 
-    AppearanceDto createAppearance(AppearanceDto charNameDto, CharacterFantasyDto characterFantasyDto) throws EntityNotFoundException;
+    AppearanceDto createAppearance(AppearanceDto appearanceDto, CharacterFantasyDto characterFantasyDto) throws EntityNotFoundException;
 
-    List<AppearanceDto> getAll(CharacterFantasyDto characterFantasyDto);
+    AppearanceDto get(CharacterFantasyDto characterFantasyDto);
 
-    AppearanceDto update(AppearanceDto charNameDto, Long id);
+    AppearanceDto update(AppearanceDto appearanceDto, Long id) throws EntityNotFoundException;
 
-    void delete(Long id);
+    void delete(Long id) throws EntityNotFoundException;
 }

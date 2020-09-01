@@ -72,8 +72,8 @@ public class Appearance {
     private String predominantFeature;
 
     @NotNull
-    @ManyToOne(fetch = LAZY, optional = false)
-    @JoinColumn(name = "char_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "char_id", nullable = false, updatable = false)
     private CharacterFantasy characterFantasy;
 
     @Column(name = "posture", length = 50)
